@@ -1,1 +1,9 @@
-spring.application.name=translator
+spring:
+  application:
+    name: translator
+
+
+integrations:
+  yandex:
+    api-key: ${YANDEX_API_KEY}
+    url: https://translate.api.cloud.yandex.net/translate/v2/translate

@@ -3,11 +3,14 @@ package tssvett.dev.translator.service.Impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import tssvett.dev.translator.dto.TranslateDto;
-import tssvett.dev.translator.dto.request.TranslateRequestDto;
+import tssvett.dev.translator.dto.TranslateRequestDto;
+import tssvett.dev.translator.dto.TranslatedString;
 import tssvett.dev.translator.service.TranslatorService;
 
-@Service
+import java.util.List;
+
 @Slf4j
+@Service
 public class TranslatorServiceMock implements TranslatorService {
     @Override
     public TranslateDto translate(TranslateRequestDto translateRequestDto) {
@@ -18,7 +21,7 @@ public class TranslatorServiceMock implements TranslatorService {
                 .textToTranslate(translateRequestDto.getTextToTranslate())
                 .sourceLanguage(translateRequestDto.getSourceLanguage())
                 .targetLanguage(translateRequestDto.getTargetLanguage())
-                .translatedText("MOCK Translated text")
+                .translatedTranslatedString(List.of(TranslatedString.builder().text("MOCK Translated text").build()))
                 .build();
     }
 }

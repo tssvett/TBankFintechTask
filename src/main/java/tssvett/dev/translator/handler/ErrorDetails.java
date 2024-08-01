@@ -14,9 +14,11 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class ErrorDetails {
+
     private String exceptionName;
     private String exceptionClass;
     private List<String> exceptionMessage;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy hh:mm:ss")
     private LocalDateTime exceptionTime;
 }
