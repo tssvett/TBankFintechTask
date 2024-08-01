@@ -1,4 +1,4 @@
-package tssvett.dev.translator.dto;
+package tssvett.dev.translator.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;

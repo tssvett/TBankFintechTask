@@ -13,4 +13,6 @@ public class TranslateDto {
     String sourceLanguage;
     @NotBlank(message = "Target language cannot be empty")
     String targetLanguage;
+    @NotBlank(message = "Translated text cannot be empty")
+    String translatedText;
 }
