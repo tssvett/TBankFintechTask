@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
+import tssvett.dev.translator.validation.annotation.ValidLanguage;
 
 import java.util.List;
 
@@ -15,11 +16,13 @@ public class TranslateDto {
     String textToTranslate;
 
     @NotBlank(message = "Source language cannot be empty")
+    @ValidLanguage
     String sourceLanguage;
 
     @NotBlank(message = "Target language cannot be empty")
+    @ValidLanguage
     String targetLanguage;
 
     @NotNull(message = "List of translated string cannot be null")
-    List<TranslatedString> translatedTranslatedString;
+    List<TranslatedString> translatedStrings;
 }

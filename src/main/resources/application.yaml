@@ -7,3 +7,5 @@ integrations:
   yandex:
     api-key: ${YANDEX_API_KEY}
     url: https://translate.api.cloud.yandex.net/translate/v2/translate
+    max-requests-per-second: 20
+    retry-delay-in-seconds: 1

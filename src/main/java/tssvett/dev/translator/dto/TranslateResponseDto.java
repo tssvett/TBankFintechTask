@@ -15,5 +15,5 @@ import java.util.List;
 public class TranslateResponseDto {
 
     @NotNull(message = "List of translated string cannot be null")
-    private List<TranslatedString> translatedTranslatedString;
+    private List<TranslatedString> translatedStrings;
 }

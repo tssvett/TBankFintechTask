@@ -19,9 +19,10 @@ public interface TranslateDtoResponseMapper {
 
     TranslateDto toTranslateDto(TranslateRequestDto translateRequestDto);
 
+    @Mapping(source = "translatedStrings", target = "translatedStrings")
     TranslateDto toTranslateDto(TranslateResponseDto translateResponseDto);
 
-    @Mapping(source = "translations", target = "translatedTranslatedString")
+    @Mapping(source = "translations", target = "translatedStrings")
     TranslateResponseDto toTranslateResponseDto(YandexResponseDto yandexResponseDto);
 
     @Mapping(source = "targetLanguage", target = "targetLanguageCode")

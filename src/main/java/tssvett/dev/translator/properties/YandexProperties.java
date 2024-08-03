@@ -13,4 +13,6 @@ public class YandexProperties {
 
     private String apiKey;
     private String url;
+    private Integer maxRequestsPerSecond;
+    private Integer retryDelayInSeconds;
 }

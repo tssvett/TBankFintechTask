@@ -5,9 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import tssvett.dev.translator.dto.TranslatedString;
-
-import java.util.List;
+import tssvett.dev.translator.validation.annotation.ValidLanguage;
 
 @Data
 @Builder
@@ -16,9 +14,11 @@ import java.util.List;
 public class YandexRequestDto {
 
     @NotBlank(message = "Language code cannot be empty")
+    @ValidLanguage
     private String targetLanguageCode;
 
     @NotBlank(message = "Language code cannot be empty")
+    @ValidLanguage
     private String sourceLanguageCode;
 
     @NotBlank(message = "Text to translate cannot be empty")
