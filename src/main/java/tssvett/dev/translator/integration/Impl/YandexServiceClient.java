@@ -3,7 +3,6 @@ package tssvett.dev.translator.integration.Impl;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -32,12 +31,12 @@ public class YandexServiceClient implements TranslateServiceClient {
     private final TranslateDtoResponseMapper translateDtoResponseMapper;
 
     @Override
-    public TranslateDto translate(TranslateRequestDto translateRequestDto) {
+    public TranslateDto translate(TranslateRequestDto translateRequestDto, String ipAddress) {
         YandexRequestDto yandexRequestDto = translateDtoResponseMapper.toYandexRequestDto(translateRequestDto);
         TranslateResponseDto response = callTranslationApi(yandexProperties.getUrl(), yandexRequestDto);
         TranslateDto translateDto = translateDtoResponseMapper.toTranslateDto(translateRequestDto);
         translateDto.setTranslatedStrings(response.getTranslatedStrings());
-
+        translateDto.setIpAddress(ipAddress);
         return translateDto;
     }
 
@@ -46,13 +45,36 @@ public class YandexServiceClient implements TranslateServiceClient {
         headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
         headers.add("Authorization", "Api-Key " + yandexProperties.getApiKey());
         HttpEntity<YandexRequestDto> entity = new HttpEntity<>(request, headers);
-        try {
-            log.info("Sending request to Yandex API : {}", request);
-            ResponseEntity<YandexResponseDto> response = restTemplate.exchange(url, HttpMethod.POST, entity, YandexResponseDto.class);
-            return translateDtoResponseMapper.toTranslateResponseDto(response.getBody());
-        } catch (HttpClientErrorException e) {
-            log.error("Error calling Yandex API: {}", e.getMessage());
-            throw new TooManyRequestsException(e.getMessage());
+
+        int retryCount = 0;
+        int maxRetries = 50;
+        long waitTime = yandexProperties.getRetryDelayInSeconds();
+
+        while (true) {
+            try {
+                log.info("Sending request to Yandex API : {}", request);
+                ResponseEntity<YandexResponseDto> response = restTemplate.exchange(url, HttpMethod.POST, entity, YandexResponseDto.class);
+                return translateDtoResponseMapper.toTranslateResponseDto(response.getBody());
+            } catch (HttpClientErrorException e) {
+                if (e.getStatusCode().value() == 429) { // Код 429 - слишком много запросов
+                    if (retryCount < maxRetries) {
+                        log.warn("Too many requests to Yandex API. Waiting for {} ms before retrying...", waitTime);
+                        try {
+                            Thread.sleep(waitTime);
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                        }
+                        retryCount++;
+                        waitTime *= 2; // Увеличиваем время ожидания (экспоненциальная задержка)
+                    } else {
+                        log.error("Max retries reached. Unable to call Yandex API.");
+                        throw new TooManyRequestsException("Exceeded maximum retries for Yandex API: " + e.getMessage());
+                    }
+                } else {
+                    log.error("Error calling Yandex API: {}", e.getMessage());
+                    throw new TooManyRequestsException(e.getMessage());
+                }
+            }
         }
     }
 }
