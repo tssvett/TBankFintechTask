@@ -20,6 +20,7 @@ public class ErrorHandler {
                         .map(fieldError -> "Field '" + fieldError.getField() + "': " + fieldError.getDefaultMessage()).toList())
                 .exceptionTime(LocalDateTime.now())
                 .build();
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
     }
 }
