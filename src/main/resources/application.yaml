@@ -1,6 +1,15 @@
 spring:
+
   application:
     name: translator
+
+  datasource:
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
 
 
 integrations:

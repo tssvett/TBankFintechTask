@@ -1,0 +1,109 @@
+openapi: 3.0.3
+info:
+  title: Translate API
+  description: Translate API for T-Bank Java Fintech
+  contact:
+    name: Zhilyaev Maxim
+    email: tssvett@mail.ru
+    url: https://github.com/tssvett
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: Translate
+    description: Перевод слов
+
+
+
+
+
+paths:
+
+  /api/translate:
+    post:
+      tags:
+        - Translate
+      summary: Перевод слов с одного языка на другой
+      description: Возвращает переведенное слово
+      operationId: TranslateWord
+      requestBody:
+        description: Тело запроса для перевода слова на другой язык
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TranslateRequestDto'
+
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TranslateResponseDto'
+        '400':
+          description: Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    TranslateRequestDto:
+      required:
+        - textToTranslate
+        - sourceLanguage
+        - targetLanguage
+      type: object
+      properties:
+        textToTranslate:
+          type: string
+          example: Овощи
+          description: Оригинальный текст
+        sourceLanguage:
+          type: string
+          example : ru
+          description: Код изначального языка
+        targetLanguage:
+          type: string
+          example : en
+          description: Код изначального языка
+
+
+    TranslateResponseDto:
+      type: object
+      properties:
+        translatedStrings:
+          type: array
+          items:
+            type: object
+            properties:
+              text:
+                type: string
+                example: "Vegetables"
+
+
+
+
+    ErrorResponse:
+      required:
+        - exception
+        - message
+        - time
+      type: object
+      properties:
+        exception:
+          type: string
+          example: Exception
+          description: Имя исключения
+        message:
+          type: string
+          example: Error message
+          description: Сообщение об ошибке
+        time:
+          type: string
+          example: 25.03.2024 12:42:41
+          description: Время ошибки

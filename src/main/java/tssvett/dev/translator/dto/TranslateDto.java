@@ -23,6 +23,8 @@ public class TranslateDto {
     @ValidLanguage
     String targetLanguage;
 
+    String ipAddress;
+
     @NotNull(message = "List of translated string cannot be null")
     List<TranslatedString> translatedStrings;
 }

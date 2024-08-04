@@ -38,15 +38,15 @@ class TranslateServiceTest {
         TranslateDto translatedDto = TranslateDto.builder()
                 .translatedStrings(List.of(new TranslatedString("Привет")))
                 .build();
-
-        when(yandexServiceClient.translate(any(TranslateRequestDto.class))).thenReturn(translatedDto);
+        String ip = "127.0.0.17";
+        when(yandexServiceClient.translate(any(TranslateRequestDto.class), ip)).thenReturn(translatedDto);
 
         // Act
         TranslateDto result = translateService.translateInParallel(translateRequestDto);
 
         // Assert
         assertEquals("Привет", result.getTranslatedStrings().get(0).getText());
-        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class));
+        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class), ip);
     }
 
     @Test
@@ -56,8 +56,8 @@ class TranslateServiceTest {
         TranslateDto translatedDto = TranslateDto.builder()
                 .translatedStrings(List.of(new TranslatedString("Привет")))
                 .build();
-
-        when(yandexServiceClient.translate(any(TranslateRequestDto.class)))
+        String ip = "127.0.0.17";
+        when(yandexServiceClient.translate(any(TranslateRequestDto.class), ip))
                 .thenThrow(new TooManyRequestsException("Too many requests"))
                 .thenReturn(translatedDto);
 
@@ -66,7 +66,7 @@ class TranslateServiceTest {
 
         // Assert
         assertEquals("Привет", result.getTranslatedStrings().get(0).getText());
-        verify(yandexServiceClient, times(2)).translate(any(TranslateRequestDto.class));
+        verify(yandexServiceClient, times(2)).translate(any(TranslateRequestDto.class), ip);
     }
 
     @Test
@@ -76,27 +76,27 @@ class TranslateServiceTest {
         TranslateDto translatedDto = TranslateDto.builder()
                 .translatedStrings(List.of(new TranslatedString("")))
                 .build();
-
-        when(yandexServiceClient.translate(any(TranslateRequestDto.class))).thenReturn(translatedDto);
+        String ip = "127.0.0.17";
+        when(yandexServiceClient.translate(any(TranslateRequestDto.class), ip)).thenReturn(translatedDto);
 
         // Act
         TranslateDto result = translateService.translateInParallel(translateRequestDto);
 
         // Assert
         assertEquals("", result.getTranslatedStrings().get(0).getText());
-        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class));
+        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class), ip);
     }
 
     @Test
     void testOtherExceptionHandling() {
         // Arrange
         TranslateRequestDto translateRequestDto = new TranslateRequestDto("Hello", "en", "ru");
-
-        when(yandexServiceClient.translate(any(TranslateRequestDto.class)))
+        String ip = "127.0.0.17";
+        when(yandexServiceClient.translate(any(TranslateRequestDto.class), ip))
                 .thenThrow(new RuntimeException("Some other error"));
 
         // Act & Assert
         assertThrows(RuntimeException.class, () -> translateService.translateInParallel(translateRequestDto));
-        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class));
+        verify(yandexServiceClient, times(1)).translate(any(TranslateRequestDto.class), ip);
     }
 }

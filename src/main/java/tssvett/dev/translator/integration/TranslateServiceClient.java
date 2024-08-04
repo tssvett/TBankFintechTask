@@ -5,5 +5,5 @@ import tssvett.dev.translator.dto.TranslateRequestDto;
 
 public interface TranslateServiceClient {
 
-    TranslateDto translate(TranslateRequestDto translateRequestDto);
+    TranslateDto translate(TranslateRequestDto translateRequestDto, String ipAddress);
 }
