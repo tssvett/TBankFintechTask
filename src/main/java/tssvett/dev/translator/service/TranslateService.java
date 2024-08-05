@@ -55,7 +55,7 @@ public class TranslateService {
         return buildFinalTranslation(translatedWords, translateRequestDto);
     }
 
-    private String getIpAddress() {
+    public String getIpAddress() {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         if (attributes != null) {
             HttpServletRequest request = attributes.getRequest();
@@ -69,7 +69,7 @@ public class TranslateService {
         return null;
     }
 
-    private TranslateDto translateWord(String word, TranslateRequestDto translateRequestDto, String ipAddress) {
+    public TranslateDto translateWord(String word, TranslateRequestDto translateRequestDto, String ipAddress) {
         trackRequestTime();
 
         TranslateRequestDto request = TranslateRequestDto.builder()
