@@ -6,8 +6,12 @@
 
 - Java
 - PostgreSQL
+- Liquibase
 - Docker
+- DBeaver
 - Postman
+- Swagger
+
 
 ## Установка и запуск проекта
 
