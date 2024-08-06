@@ -16,7 +16,7 @@
 
    Откройте командную строку и выполните команду:
    ```bash
-   git clone <https://github.com/tssvett/TBankFintechTask.git>
+   git clone https://github.com/tssvett/TBankFintechTask.git
 
 2. **Перейдите в директорию проекта:**
     ```bash
