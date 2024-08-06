@@ -26,6 +26,11 @@
     ```bash
     cd <путь до директории проекта>
 
+
+3. **Cоздайте ваш API ключ яндекса:**
+
+   [Создайте API ключ](https://yandex.cloud/ru/docs/translate/operations/sa-api-key?utm_referrer=https%3A%2F%2Fyandex.ru%2F)
+
 3. **Добавьте ваш API ключ яндекса в файл .env:**
  
    Найдите файл .env и введите желаемые данные для бд и ваш API ключ.
